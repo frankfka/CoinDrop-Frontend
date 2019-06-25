@@ -5,9 +5,7 @@ class ValidPaymentProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: true,
             profileData: this.props.profileData,
-            error: null
         }
     }
 
