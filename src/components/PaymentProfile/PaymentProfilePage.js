@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 
 import { getProfile } from '../../utils/networkUtil'
 
-import ValidPaymentProfile from './ValidPaymentProfile';
-import InvalidPaymentProfile from "./InvalidPaymentProfile";
+import ValidPaymentProfilePage from './ValidPaymentProfilePage';
+import InvalidPaymentProfilePage from "./InvalidPaymentProfilePage";
 
-class PaymentProfile extends Component {
+class PaymentProfilePage extends Component {
 
     constructor(props) {
         super(props);
@@ -71,17 +71,17 @@ class PaymentProfile extends Component {
     // Render page for a valid payment profile
     validPaymentProfile(props) {
         return (
-            <ValidPaymentProfile {...props}/>
+            <ValidPaymentProfilePage {...props}/>
         )
     }
 
     // Render page for an invalid payment profile
     invalidPaymentProfile() {
         return (
-            <InvalidPaymentProfile/>
+            <InvalidPaymentProfilePage/>
         )
     }
 
 }
 
-export default PaymentProfile;
+export default PaymentProfilePage;

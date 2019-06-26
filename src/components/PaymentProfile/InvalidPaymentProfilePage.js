@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-class InvalidPaymentProfile extends Component {
+class InvalidPaymentProfilePage extends Component {
 
     render() {
         return (
@@ -11,4 +11,4 @@ class InvalidPaymentProfile extends Component {
     }
 }
 
-export default InvalidPaymentProfile;
+export default InvalidPaymentProfilePage;
