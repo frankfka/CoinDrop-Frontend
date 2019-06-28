@@ -26,23 +26,24 @@ class PaymentProfileCard extends Component {
     }
 
     render() {
+        let { currencyCode, displayName, imageUrl, data } = this.props;
         return (
             <Card>
                 <CardMedia
-                    image="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png" // TODO: Image
-                    title="BTC" // TODO
+                    image={imageUrl == null ? "" : imageUrl} // TODO: Placeholder image
+                    title={currencyCode}
                     component="img"
                 />
                 <CardContent>
                     <Typography color="textSecondary">
-                        BTC
+                        {currencyCode}
                     </Typography>
                     <Typography variant="h5" component="h2">
-                        Bitcoin
+                        {displayName == null ? currencyCode : displayName}
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="medium" color="primary" onClick={this.onClick}>
+                    <Button size="medium" color="primary" onClick={this.onClick} href="#">
                         View Address
                     </Button>
                 </CardActions>
@@ -56,7 +57,9 @@ PaymentProfileCard.propTypes = {
     // Validate payment profile
     paymentMethod: PropTypes.shape({
         currencyCode: PropTypes.string.isRequired,
-        data: PropTypes.string.isRequired
+        data: PropTypes.string.isRequired,
+        displayName: PropTypes.string,
+        imageUrl: PropTypes.string
     }).isRequired,
     onViewAddressClicked: PropTypes.func
 };

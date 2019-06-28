@@ -17,12 +17,16 @@ class PaymentProfilePage extends Component {
     }
 
     render() {
-        return (
-            // Conditional rendering based on whether the ID given is valid
-            (!this.state.error && !this.state.loading) ?
-                this.validPaymentProfile({profileData: this.state.profileData})
-                : this.invalidPaymentProfile()
-        )
+        if (!this.state.loading) {
+            return (
+                // Conditional rendering based on whether the ID given is valid
+                !this.state.error ?
+                    this.validPaymentProfile({profileData: this.state.profileData})
+                    : this.invalidPaymentProfile()
+            )
+        } else {
+            return null
+        }
     }
 
     componentDidMount() {
@@ -38,7 +42,7 @@ class PaymentProfilePage extends Component {
                     }
                 })
                 .catch(err => {
-                    this.profileLoadError(Error(err.response.data.error))
+                    this.profileLoadError(Error(err))
                 })
         } else {
             this.profileLoadError(Error("No profile ID given."))
@@ -57,6 +61,7 @@ class PaymentProfilePage extends Component {
     }
     profileLoadError(error) {
         console.error(error.message);
+        console.error(error.response.data.error);
         this.setState({
             loading: false,
             error: error
