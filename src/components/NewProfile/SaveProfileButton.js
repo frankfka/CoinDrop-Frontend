@@ -1,7 +1,7 @@
+import Fab from "@material-ui/core/Fab";
+import Save from '@material-ui/icons/Save'
 import React from "react";
-import AddIcon from '@material-ui/icons/Add';
-import Button from "@material-ui/core/Button";
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles} from "@material-ui/core";
 import * as PropTypes from "prop-types";
 
 const useStyles = makeStyles(theme => ({
@@ -13,26 +13,26 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export function AddPaymentMethod(props) {
+export function SaveProfileButton(props) {
     const classes = useStyles();
     let {onClick, isEnabled} = props;
     return (
-        <Button
-            variant="contained"
-            size="small"
-            color="secondary"
+        <Fab
+            variant="extended"
+            size="large"
+            color="primary"
             aria-label="Add"
+            disabled={!isEnabled}
             className={classes.margin}
             onClick={onClick}
-            disabled={!isEnabled}
         >
-            <AddIcon className={classes.extendedIcon}/>
-            Add Payment Method
-        </Button>
-    );
+           <Save className={classes.extendedIcon}/>
+           Create Payment Profile
+        </Fab>
+    )
 }
 
-AddPaymentMethod.propTypes = {
+SaveProfileButton.propTypes = {
     onClick: PropTypes.func.isRequired,
     isEnabled: PropTypes.bool.isRequired
 };

@@ -1,5 +1,4 @@
 import {Grid} from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
 import {makeStyles} from '@material-ui/core/styles';
 import React from "react";
 import TextField from "@material-ui/core/TextField";
@@ -36,38 +35,35 @@ export function EditablePaymentMethod(props) {
     let {currencyCode, data, availableCurrencies, onCurrencyCodeChange, onDataChange, onDelete, hasError} = props;
     let selectableCurrencies = availableCurrencies.map((currencyCode) => { return { value: currencyCode, label: currencyCode } });
     return (
-        <Paper className={classes.paper}>
-            <Grid container className={classes.root}>
-                <Grid item xs={3}>
-                    <Select
-                        value={currencyCode}
-                        onChange={(newCurrencyCode) => {onCurrencyCodeChange(newCurrencyCode.value)}}
-                        options={selectableCurrencies}
-                        isDisabled={currencyCode}
-                        placeholder={'Currency'}
-                        isSearchable={true}
-                    />
-                </Grid>
-                <Grid item xs={8}>
-                    <TextField
-                        required
-                        error={hasError}
-                        value={data}
-                        label="Payment Address"
-                        placeholder={currencyCode}
-                        className={classes.textField}
-                        margin="normal"
-                        variant="outlined"
-                        onChange={(e) => {onDataChange(e.target.value)}}
-                    />
-                </Grid>
-                <Grid item xs={1}>
-                    <IconButton aria-label="Delete" className={classes.margin} onClick={onDelete}>
-                        <DeleteIcon/>
-                    </IconButton>
-                </Grid>
+        <Grid container className={classes.root}>
+            <Grid item xs={3}>
+                <Select
+                    required
+                    value={currencyCode ? {value: currencyCode, label: currencyCode} : null}
+                    onChange={(newCurrencyCode) => {onCurrencyCodeChange(newCurrencyCode.value)}}
+                    options={selectableCurrencies}
+                    placeholder={'Currency'}
+                    isSearchable={true}
+                />
             </Grid>
-        </Paper>
+            <Grid item xs={8}>
+                <TextField
+                    required
+                    error={hasError}
+                    value={data ? data : ''}
+                    label='Payment Address'
+                    className={classes.textField}
+                    margin="normal"
+                    variant="outlined"
+                    onChange={(e) => {onDataChange(e.target.value)}}
+                />
+            </Grid>
+            <Grid item xs={1}>
+                <IconButton aria-label="Delete" className={classes.margin} onClick={onDelete}>
+                    <DeleteIcon/>
+                </IconButton>
+            </Grid>
+        </Grid>
     );
 }
 

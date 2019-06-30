@@ -8,13 +8,24 @@ Returns the following:
     profileId (string)
     dateCreated
     profileName
-    paymentMethods []
+    paymentMethods [{ currencyCode, data }]
  */
 export async function getProfile(profileId) {
     return await axios.get(API_PROFILE_URL, {
         params: {
             profileId: profileId
         }
+    })
+}
+
+/*
+Attempts to save a profile & returns a promise
+Expects the following:
+    paymentMethods [{ currencyCode, data }]
+ */
+export async function saveProfile(profileData) {
+    return await axios.put(API_PROFILE_URL, {
+        ...profileData
     })
 }
 

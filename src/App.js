@@ -15,7 +15,7 @@ function App() {
             <Switch>
                 <Route exact path={ROUTES.HOME} component={Home}/>
                 <Route exact path={ROUTES.NEW} component={NewProfilePage}/>
-                <Route path={ROUTES.PROFILE} component={PaymentProfilePage}/>
+                <Route path={ROUTES.PROFILE_ID_MATCH} component={PaymentProfilePage}/>
                 <Route component={InvalidPath}/>
             </Switch>
         </Router>
