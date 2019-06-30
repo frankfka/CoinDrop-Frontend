@@ -12,9 +12,6 @@ class PaymentProfileCard extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            paymentMethod: this.props.paymentMethod,
-        };
         // Bind functions to self
         this.onClick = this.onClick.bind(this);
     }
@@ -22,11 +19,11 @@ class PaymentProfileCard extends Component {
     // On click of view payment data button
     onClick(e) {
         e.preventDefault();
-        this.props.onViewAddressClicked(this.state.paymentMethod.currencyCode)
+        this.props.onViewAddressClicked(this.props.paymentMethod)
     }
 
     render() {
-        let { currencyCode, displayName, imageUrl, data } = this.props;
+        let { currencyCode, displayName, imageUrl } = this.props.paymentMethod;
         return (
             <Card>
                 <CardMedia

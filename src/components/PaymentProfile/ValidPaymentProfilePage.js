@@ -27,7 +27,7 @@ class ValidPaymentProfilePage extends Component {
                     <Container maxWidth="md">
                         <PaymentProfileCardCollection
                             paymentMethods={completeProfileData.paymentMethods} // This includes additional coin info
-                            onViewAddressClicked={(currencyCode) => {console.log(currencyCode)}}
+                            onViewAddressClicked={(paymentMethod) => {console.log(paymentMethod)}}
                         />
                     </Container>
                 </div>

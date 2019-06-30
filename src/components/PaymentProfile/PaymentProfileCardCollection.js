@@ -19,7 +19,8 @@ class PaymentProfileCardCollection extends Component {
             <Grid container spacing={3}>
                 {this.state.paymentMethods.map((paymentMethod) =>
                     <Grid item xs={6} sm={4}
-                          key={paymentMethod.currencyCode}>
+                          key={paymentMethod.currencyCode}
+                    >
                         <PaymentProfileCard paymentMethod={paymentMethod}
                                             onViewAddressClicked={onViewAddressClicked}/>
                     </Grid>
@@ -33,10 +34,12 @@ PaymentProfileCardCollection.propTypes = {
     paymentMethods: PropTypes.arrayOf(
         PropTypes.shape({
             currencyCode: PropTypes.string.isRequired,
-            data: PropTypes.string.isRequired
+            data: PropTypes.string.isRequired,
+            displayName: PropTypes.string,
+            imageUrl: PropTypes.string
         })
     ).isRequired,
-    onViewAddressClicked: PropTypes.func
+    onViewAddressClicked: PropTypes.func.isRequired
 };
 
 export default PaymentProfileCardCollection;
