@@ -40,7 +40,7 @@ class PaymentProfileCard extends Component {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="medium" color="primary" onClick={this.onClick} href="#">
+                    <Button size="medium" color="primary" onClick={this.onClick}>
                         View Address
                     </Button>
                 </CardActions>

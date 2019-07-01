@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+// TODO: Change text to loading when loading
 export function SaveProfileButton(props) {
     const classes = useStyles();
     let {onClick, isEnabled} = props;

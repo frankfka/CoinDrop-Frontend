@@ -5,6 +5,7 @@ import Container from "@material-ui/core/Container";
 import {getCoinInfo} from '../../utils/networkUtil'
 
 import PaymentProfileCardCollection from "./PaymentProfileCardCollection";
+import PaymentMethodDetailDialog from "./PaymentMethodDetailsDialog";
 
 class ValidPaymentProfilePage extends Component {
 
@@ -15,19 +16,31 @@ class ValidPaymentProfilePage extends Component {
             rawProfileData: this.props.profileData,
             rawCoinInfo: null,
             completeProfileData: null,
+            openDialogFor: null,
             error: null
-        }
+        };
+        this.handlePaymentMethodDialogClose = this.handlePaymentMethodDialogClose.bind(this);
+        this.paymentMethodClicked = this.paymentMethodClicked.bind(this);
     }
 
     render() {
-        let { completeProfileData, loading, error } = this.state;
+        let { completeProfileData, loading, error, openDialogFor } = this.state;
         if (!loading && completeProfileData) {
             return (
                 <div>
+                    {
+                        openDialogFor ? (
+                            <PaymentMethodDetailDialog
+                                paymentMethod={openDialogFor}
+                                handleClose={this.handlePaymentMethodDialogClose}
+                                isOpen={openDialogFor != null}
+                            />
+                        ) : <div/>
+                    }
                     <Container maxWidth="md">
                         <PaymentProfileCardCollection
                             paymentMethods={completeProfileData.paymentMethods} // This includes additional coin info
-                            onViewAddressClicked={(paymentMethod) => {console.log(paymentMethod)}}
+                            onViewAddressClicked={this.paymentMethodClicked}
                         />
                     </Container>
                 </div>
@@ -72,6 +85,18 @@ class ValidPaymentProfilePage extends Component {
             loading: false,
             rawCoinInfo: apiData,
             completeProfileData: combinedProfileData
+        })
+    }
+
+    paymentMethodClicked(paymentMethod) {
+        this.setState({
+            openDialogFor: paymentMethod
+        })
+    }
+
+    handlePaymentMethodDialogClose() {
+        this.setState({
+            openDialogFor: null
         })
     }
 
