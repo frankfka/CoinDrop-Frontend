@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {API_PROFILE_URL, API_COIN_INFO_URL, API_GET_QR_URL} from '../constants/networking';
+import {API_PROFILE_URL, API_COIN_INFO_URL} from '../constants/networking';
 
 /*
 Attempts to retrieve profile data from backend & returns a promise

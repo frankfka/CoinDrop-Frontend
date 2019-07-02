@@ -225,7 +225,8 @@ class NewProfileForm extends Component {
 }
 
 NewProfileForm.propTypes = {
-    allCurrencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired
+    allCurrencies: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    classes: PropTypes.object.isRequired
 };
 
 export default NewProfileForm;

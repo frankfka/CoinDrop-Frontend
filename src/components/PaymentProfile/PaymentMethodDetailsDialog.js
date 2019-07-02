@@ -3,24 +3,6 @@ import {Dialog, DialogContent, DialogTitle, DialogContentText,
 import React from "react";
 import * as PropTypes from "prop-types";
 import PaymentMethodQRCode from "./PaymentMethodQRCode";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-
-const useStyles = makeStyles(theme => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-    },
-    dense: {
-        marginTop: theme.spacing(2),
-    },
-    menu: {
-        width: 200,
-    },
-}));
 
 export default function PaymentMethodDetailDialog(props) {
     let { paymentMethod, isOpen, handleClose } = props;
