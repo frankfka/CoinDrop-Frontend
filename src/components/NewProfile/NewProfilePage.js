@@ -6,7 +6,7 @@ import withPageContainer from "../Common/withPageContainer";
 
 const styles = (theme) => ({
     newProfileForm: {
-        marginTop: theme.spacing(4)
+        marginTop: theme.spacing(2)
     },
 });
 
@@ -38,7 +38,7 @@ class NewProfilePage extends Component {
     }
 }
 
-export default withStyles(styles)(withPageContainer(NewProfilePage));
+export default withPageContainer(withStyles(styles)(NewProfilePage));
 
 NewProfilePage.propTypes = {
     classes: PropTypes.object.isRequired

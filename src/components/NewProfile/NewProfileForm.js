@@ -1,14 +1,28 @@
 import React, {Component} from 'react';
 import {Redirect} from "react-router-dom";
 import * as PropTypes from "prop-types";
-import {EditablePaymentMethod} from "./EditablePaymentMethod";
-import {AddPaymentMethod} from "./AddPaymentMethod";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {SaveProfileButton} from "./SaveProfileButton";
 
 import {saveProfile} from "../../utils/networkUtil";
 import {PROFILE} from "../../constants/routes";
+import ErrorPrompt from "../Common/ErrorPrompt";
+import {withStyles} from "@material-ui/core";
+import NewProfileFormPaymentMethods from "./NewProfileFormPaymentMethods";
+import NewProfileFormProfileInfo from "./NewProfileFormProfileInfo";
+import {PROFILE_NAME_KEY} from "./NewProfileFormProfileInfo";
+
+const styles = (theme) => ({
+    heading: {
+        marginTop: theme.spacing(4),
+        marginBottom: theme.spacing(2)
+    },
+    saveProfileButtonContainer: {
+        textAlign: 'center',
+        margin: theme.spacing(2)
+    }
+});
 
 class NewProfileForm extends Component {
 
@@ -21,6 +35,7 @@ class NewProfileForm extends Component {
             allCurrencyCodes: props.allCurrencies, // All supported currencies minus the ones already added
             formData: {
                 formErrorMessage: null,
+                profileInfo: {},
                 paymentMethods: []
             }
         };
@@ -28,14 +43,17 @@ class NewProfileForm extends Component {
         this.onAddPaymentMethod = this.onAddPaymentMethod.bind(this);
         this.onPaymentMethodCurrencyCodeChange = this.onPaymentMethodCurrencyCodeChange.bind(this);
         this.onPaymentMethodDelete = this.onPaymentMethodDelete.bind(this);
+        this.onProfileInfoChange = this.onProfileInfoChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.onDismissErrorPrompt = this.onDismissErrorPrompt.bind(this);
     }
 
     render() {
         let { allCurrencyCodes, formData, loading, savedProfileId } = this.state;
+        let { classes } = this.props;
         let currentPaymentMethods = formData.paymentMethods;
-        let self = this;
 
+        // If payment profile was made, redirect to the created profile
         if (savedProfileId) {
             return (
                 <Redirect to={PROFILE + savedProfileId}/>
@@ -44,41 +62,43 @@ class NewProfileForm extends Component {
 
         return (
             <Grid container>
-                <Grid item xs={12}>
-                    {
-                        formData.formErrorMessage ? (
-                            <div>{formData.formErrorMessage}</div>
-                        ) : <div/>
-                    }
+                {
+                    formData.formErrorMessage ? (
+                        <ErrorPrompt
+                            message={formData.formErrorMessage}
+                            onDismiss={this.onDismissErrorPrompt}
+                        />
+                    ) : <div/>
+                }
+                <Grid item xs={12} className={classes.heading}>
+                    <Typography variant="h5" component="h5">
+                        Profile Information
+                    </Typography>
                 </Grid>
                 <Grid item xs={12}>
+                    <NewProfileFormProfileInfo
+                        profileInfo={formData.profileInfo}
+                        onProfileInfoChange={this.onProfileInfoChange}
+                    />
+                </Grid>
+                <Grid item xs={12} className={classes.heading}>
                     <Typography variant="h5" component="h5">
                         Payment Methods
                     </Typography>
-                    {
-                        currentPaymentMethods.length < 1 ? (
-                            <div>Add at least one payment method.</div>
-                        ) : <div/>
-                    }
-                    {currentPaymentMethods.map((paymentMethod, index) => {
-                        return (
-                            <EditablePaymentMethod
-                                key={index}
-                                currencyCode={paymentMethod.currencyCode}
-                                data={paymentMethod.data}
-                                onDataChange={self.onPaymentMethodDataChange(index)}
-                                hasError={paymentMethod.hasError}
-                                availableCurrencies={allCurrencyCodes}
-                                onCurrencyCodeChange={self.onPaymentMethodCurrencyCodeChange(index)}
-                                onDelete={self.onPaymentMethodDelete(index)}/>
-                            )
-                    })}
-                    <AddPaymentMethod
-                        onClick={this.onAddPaymentMethod}
-                        isEnabled={currentPaymentMethods.length < 10 && !loading}
-                    />
                 </Grid>
                 <Grid item xs={12}>
+                    <NewProfileFormPaymentMethods
+                        currentPaymentMethods={currentPaymentMethods}
+                        allCurrencyCodes={allCurrencyCodes}
+                        enableAddButton={currentPaymentMethods.length < 10 && !loading}
+                        showHelperText={currentPaymentMethods.length === 0}
+                        onDataChange={this.onPaymentMethodDataChange}
+                        onCurrencyCodeChange={this.onPaymentMethodCurrencyCodeChange}
+                        onDelete={this.onPaymentMethodDelete}
+                        onAdd={this.onAddPaymentMethod}
+                    />
+                </Grid>
+                <Grid item xs={12} className={classes.saveProfileButtonContainer}>
                     <SaveProfileButton
                         onClick={this.onFormSubmit}
                         isEnabled={!loading}
@@ -88,6 +108,20 @@ class NewProfileForm extends Component {
         )
     }
 
+
+    /*
+    Profile info callbacks
+     */
+    onProfileInfoChange(key, newValue) {
+        let profileInfo = this.state.formData.profileInfo;
+        profileInfo[key] = newValue;
+        this.setState({
+            formData: {
+                ...this.state.formData,
+                profileInfo: profileInfo
+            }
+        })
+    }
 
     /*
     Payment method callbacks
@@ -143,7 +177,8 @@ class NewProfileForm extends Component {
             let formData = this.state.formData;
             // Extract fields that we need
             let dataToSubmit = {
-              paymentMethods: formData.paymentMethods.map((paymentMethod) => {
+                profileName: formData.profileInfo[PROFILE_NAME_KEY],
+                paymentMethods: formData.paymentMethods.map((paymentMethod) => {
                   return {
                       currencyCode: paymentMethod.currencyCode,
                       data: paymentMethod.data
@@ -174,6 +209,18 @@ class NewProfileForm extends Component {
                     })
                 })
         }
+    }
+
+    /*
+    On dismiss error prompt: Clears error message from state
+     */
+    onDismissErrorPrompt() {
+        this.setState({
+            formData: {
+                ...this.state.formData,
+                formErrorMessage: null
+            }
+        })
     }
 
     /*
@@ -229,4 +276,4 @@ NewProfileForm.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default NewProfileForm;
+export default withStyles(styles)(NewProfileForm);

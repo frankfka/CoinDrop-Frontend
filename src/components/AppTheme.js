@@ -8,6 +8,9 @@ const appTheme = createMuiTheme({
         secondary: {
             main: '#ef6c00',
         },
+        error: {
+            main: '#ef6c00',
+        }
     },
     props: {
         MuiButtonBase: {
