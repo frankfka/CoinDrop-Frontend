@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Container from "@material-ui/core/Container";
 
 import {getCoinInfo} from '../../utils/networkUtil'
 
 import PaymentProfileCardCollection from "./PaymentProfileCardCollection";
 import PaymentMethodDetailDialog from "./PaymentMethodDetailsDialog";
+import {FullScreenLoading} from "../Common/Loading";
+import withPageContainer from "../Common/withPageContainer";
 
 class ValidPaymentProfilePage extends Component {
 
@@ -24,6 +25,7 @@ class ValidPaymentProfilePage extends Component {
     }
 
     render() {
+        // TODO: deal with this error somehow
         let { completeProfileData, loading, error, openDialogFor } = this.state;
         if (!loading && completeProfileData) {
             return (
@@ -37,16 +39,16 @@ class ValidPaymentProfilePage extends Component {
                             />
                         ) : <div/>
                     }
-                    <Container maxWidth="md">
+                    <div>
                         <PaymentProfileCardCollection
                             paymentMethods={completeProfileData.paymentMethods} // This includes additional coin info
                             onViewAddressClicked={this.paymentMethodClicked}
                         />
-                    </Container>
+                    </div>
                 </div>
             )
         } else {
-            return null
+            return <FullScreenLoading/>
         }
     }
 
@@ -55,8 +57,8 @@ class ValidPaymentProfilePage extends Component {
             return paymentMethod.currencyCode;
         });
         getCoinInfo(currencyCodes)
-            .then((res) => {
-                this.coinInfoLoadSuccess(res.data.rawCoinInfo);
+            .then((coinInfo) => {
+                this.coinInfoLoadSuccess(coinInfo);
             })
             .catch((err) => {
                 this.coinInfoLoadError(Error(err))
@@ -100,6 +102,7 @@ class ValidPaymentProfilePage extends Component {
         })
     }
 
+    // TODO: Display this error somehow
     coinInfoLoadError(error) {
         console.error(error.message);
         console.error(error.response.data.error);
@@ -124,4 +127,4 @@ ValidPaymentProfilePage.propTypes = {
     }).isRequired
 };
 
-export default ValidPaymentProfilePage;
+export default withPageContainer(ValidPaymentProfilePage);

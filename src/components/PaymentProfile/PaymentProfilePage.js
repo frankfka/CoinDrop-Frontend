@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 
-import { getProfile } from '../../utils/networkUtil'
+import {getProfile} from '../../utils/networkUtil'
 
 import ValidPaymentProfilePage from './ValidPaymentProfilePage';
 import InvalidPaymentProfilePage from "./InvalidPaymentProfilePage";
+import {FullScreenLoading} from "../Common/Loading";
 
+// TODO: Re-evaluate the nesting of these pages
 class PaymentProfilePage extends Component {
 
     constructor(props) {
@@ -21,11 +23,11 @@ class PaymentProfilePage extends Component {
             return (
                 // Conditional rendering based on whether the ID given is valid
                 !this.state.error ?
-                    this.validPaymentProfile({profileData: this.state.profileData})
-                    : this.invalidPaymentProfile()
+                    PaymentProfilePage.validPaymentProfile({profileData: this.state.profileData})
+                    : PaymentProfilePage.invalidPaymentProfile()
             )
         } else {
-            return null
+            return <FullScreenLoading/>
         }
     }
 
@@ -33,10 +35,10 @@ class PaymentProfilePage extends Component {
         let profileId = this.props.match.params.id;
         if (profileId) {
             getProfile(profileId)
-                .then(res => {
+                .then(profile => {
                     // Check that data returned is valid by comparing input & output profile ID
-                    if (res.data && res.data.profileId === profileId) {
-                        this.profileLoadSuccess(res.data);
+                    if (profile && profile.profileId === profileId) {
+                        this.profileLoadSuccess(profile);
                     } else {
                         this.profileLoadError("Invalid payment profile response object.");
                     }
@@ -59,6 +61,8 @@ class PaymentProfilePage extends Component {
             profileData: profileData
         })
     }
+
+    // TODO: display this error somehow
     profileLoadError(error) {
         console.error(error.message);
         console.error(error.response.data.error);
@@ -74,14 +78,14 @@ class PaymentProfilePage extends Component {
      */
 
     // Render page for a valid payment profile
-    validPaymentProfile(props) {
+    static validPaymentProfile(props) {
         return (
             <ValidPaymentProfilePage {...props}/>
         )
     }
 
     // Render page for an invalid payment profile
-    invalidPaymentProfile() {
+    static invalidPaymentProfile() {
         return (
             <InvalidPaymentProfilePage/>
         )

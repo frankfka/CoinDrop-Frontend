@@ -18,7 +18,7 @@ class PaymentProfileCardCollection extends Component {
         return (
             <Grid container spacing={3}>
                 {this.state.paymentMethods.map((paymentMethod) =>
-                    <Grid item xs={6} sm={4}
+                    <Grid item xs={6} sm={4} md={3}
                           key={paymentMethod.currencyCode}
                     >
                         <PaymentProfileCard paymentMethod={paymentMethod}

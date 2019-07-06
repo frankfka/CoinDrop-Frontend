@@ -4,7 +4,7 @@ import React from "react";
 const styles = (theme) => ({
     pageContainer: {
         paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8),
+        paddingBottom: theme.spacing(8)
     }
 });
 

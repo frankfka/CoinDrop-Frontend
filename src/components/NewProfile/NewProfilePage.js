@@ -22,6 +22,7 @@ class NewProfilePage extends Component {
 
     render() {
         const {classes} = this.props;
+
         return (
             <div className={classes.root}>
                 <Typography variant='h3' component='h1'>New Profile</Typography>
@@ -29,13 +30,12 @@ class NewProfilePage extends Component {
                     Create a unique payment profile for others to pay you in cryptocurrency.
                 </Typography>
                 <div className={classes.newProfileForm}>
-                    <NewProfileForm
-                        allCurrencies={['BTC', 'XRP', 'ETH','XLM', 'LINK', 'XMR','BAT', 'ETC', 'BSV','BCH']}
-                    />
+                    <NewProfileForm/>
                 </div>
             </div>
         )
     }
+
 }
 
 export default withPageContainer(withStyles(styles)(NewProfilePage));

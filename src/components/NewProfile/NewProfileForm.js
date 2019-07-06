@@ -5,7 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {SaveProfileButton} from "./SaveProfileButton";
 
-import {saveProfile} from "../../utils/networkUtil";
+import {getSupportedCoins, saveProfile} from "../../utils/networkUtil";
 import {PROFILE} from "../../constants/routes";
 import ErrorPrompt from "../Common/ErrorPrompt";
 import {withStyles} from "@material-ui/core";
@@ -29,10 +29,11 @@ class NewProfileForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
+            loadingSave: false,
+            loadingCurrencies: true,
             error: null,
             savedProfileId: null,
-            allCurrencyCodes: props.allCurrencies, // All supported currencies minus the ones already added
+            allCurrencyCodes: [],
             formData: {
                 formErrorMessage: null,
                 profileInfo: {},
@@ -49,8 +50,9 @@ class NewProfileForm extends Component {
     }
 
     render() {
-        let { allCurrencyCodes, formData, loading, savedProfileId } = this.state;
-        let { classes } = this.props;
+        let {allCurrencyCodes, formData, loadingSave,
+            savedProfileId, loadingCurrencies} = this.state;
+        let {classes} = this.props;
         let currentPaymentMethods = formData.paymentMethods;
 
         // If payment profile was made, redirect to the created profile
@@ -88,9 +90,10 @@ class NewProfileForm extends Component {
                 </Grid>
                 <Grid item xs={12}>
                     <NewProfileFormPaymentMethods
+                        loading={loadingCurrencies}
                         currentPaymentMethods={currentPaymentMethods}
                         allCurrencyCodes={allCurrencyCodes}
-                        enableAddButton={currentPaymentMethods.length < 10 && !loading}
+                        enableAddButton={currentPaymentMethods.length < 10 && !loadingSave}
                         showHelperText={currentPaymentMethods.length === 0}
                         onDataChange={this.onPaymentMethodDataChange}
                         onCurrencyCodeChange={this.onPaymentMethodCurrencyCodeChange}
@@ -101,11 +104,30 @@ class NewProfileForm extends Component {
                 <Grid item xs={12} className={classes.saveProfileButtonContainer}>
                     <SaveProfileButton
                         onClick={this.onFormSubmit}
-                        isEnabled={!loading}
+                        loading={loadingSave}
                     />
                 </Grid>
             </Grid>
         )
+    }
+
+    /*
+    Retrieves a list of supported currencies on mount
+     */
+    componentDidMount() {
+        getSupportedCoins()
+            .then((coins) => {
+                this.setState({
+                    loadingCurrencies: false,
+                    allCurrencyCodes: coins
+                })
+            })
+            .catch((err) => {
+                this.setState({
+                    error: err,
+                    loadingCurrencies: false
+                })
+            })
     }
 
 
@@ -135,6 +157,7 @@ class NewProfileForm extends Component {
         });
         this.updatePaymentMethods(paymentMethods)
     }
+
     onPaymentMethodCurrencyCodeChange(index) {
         return (currencyCode) => {
             let paymentMethods = this.state.formData.paymentMethods;
@@ -145,6 +168,7 @@ class NewProfileForm extends Component {
             this.updatePaymentMethods(paymentMethods);
         }
     }
+
     onPaymentMethodDataChange(index) {
         return (data) => {
             let paymentMethods = this.state.formData.paymentMethods;
@@ -155,6 +179,7 @@ class NewProfileForm extends Component {
             this.updatePaymentMethods(paymentMethods)
         }
     }
+
     onPaymentMethodDelete(index) {
         return () => {
             let paymentMethods = this.state.formData.paymentMethods;
@@ -173,21 +198,20 @@ class NewProfileForm extends Component {
     onFormSubmit() {
         if (this.validatePaymentMethods()) {
             // Set to loading, we're going to make a network call
-            this.setState({ loading: true });
+            this.setState({loading: true});
             let formData = this.state.formData;
             // Extract fields that we need
             let dataToSubmit = {
                 profileName: formData.profileInfo[PROFILE_NAME_KEY],
                 paymentMethods: formData.paymentMethods.map((paymentMethod) => {
-                  return {
-                      currencyCode: paymentMethod.currencyCode,
-                      data: paymentMethod.data
-                  }
-              })
+                    return {
+                        currencyCode: paymentMethod.currencyCode,
+                        data: paymentMethod.data
+                    }
+                })
             };
             saveProfile(dataToSubmit)
-                .then((res) => {
-                    let profileId = res.data.profileId;
+                .then((profileId) => {
                     if (profileId) {
                         // Use Redirect to push to new address
                         this.setState({
@@ -234,6 +258,7 @@ class NewProfileForm extends Component {
             }
         });
     }
+
     // Validates payment methods - sets errors if any & returns false, or returns true if all is good
     validatePaymentMethods() {
         let currentPaymentMethods = this.state.formData.paymentMethods;

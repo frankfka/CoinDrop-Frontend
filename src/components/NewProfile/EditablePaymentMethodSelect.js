@@ -2,6 +2,7 @@ import Select from "react-select";
 import React from "react";
 import * as PropTypes from "prop-types";
 
+// Styles for the select component
 const selectStyles = (muiTheme) => ({
     // Main container
     container: (provided, state) => ({
@@ -45,8 +46,13 @@ const selectStyles = (muiTheme) => ({
     noOptionsMessage: (provided, state) => ({
         ...provided,
         fontFamily: muiTheme.typography.fontFamily
+    }),
+    loadingMessage: (provided, state) => ({
+        ...provided,
+        fontFamily: muiTheme.typography.fontFamily
     })
 });
+// Theming for react select
 const selectTheme = (muiTheme) => ((theme) => ({
     ...theme,
     borderRadius: muiTheme.shape.borderRadius,
@@ -61,14 +67,17 @@ const selectTheme = (muiTheme) => ((theme) => ({
 }));
 
 function EditablePaymentMethodSelect(props) {
-    let {muiTheme, selectedValue, onCurrencyCodeChange, selectableCurrencies} = props;
+    let {muiTheme, selectedValue, onCurrencyCodeChange, selectableCurrencies, loading} = props;
 
     return (
         <Select
+            isLoading={loading}
             theme={selectTheme(muiTheme)}
             styles={selectStyles(muiTheme)}
             value={selectedValue}
-            onChange={(newCurrencyCode) => {onCurrencyCodeChange(newCurrencyCode.value)}}
+            onChange={(newCurrencyCode) => {
+                onCurrencyCodeChange(newCurrencyCode.value)
+            }}
             options={selectableCurrencies}
             placeholder={'Currency'}
             isSearchable={true}

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 function NewProfileFormPaymentMethods(props) {
     let classes = useStyles();
-    let { currentPaymentMethods, allCurrencyCodes, enableAddButton, showHelperText } = props;
+    let { currentPaymentMethods, allCurrencyCodes, enableAddButton, showHelperText, loading } = props;
     let { onDataChange, onCurrencyCodeChange, onDelete, onAdd} = props;
 
     return (
@@ -39,6 +39,7 @@ function NewProfileFormPaymentMethods(props) {
             {currentPaymentMethods.map((paymentMethod, index) => {
                 return (
                     <EditablePaymentMethod
+                        loading={loading}
                         key={index}
                         currencyCode={paymentMethod.currencyCode}
                         data={paymentMethod.data}

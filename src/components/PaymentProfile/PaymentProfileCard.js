@@ -7,6 +7,15 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography'
+import {withStyles} from "@material-ui/core";
+
+const styles = (theme) => ({
+    currencyImage: {
+        padding: theme.spacing(4),
+        paddingBottom: theme.spacing(2),
+        maxWidth: '256px'
+    },
+});
 
 class PaymentProfileCard extends Component {
 
@@ -23,14 +32,17 @@ class PaymentProfileCard extends Component {
     }
 
     render() {
-        let { currencyCode, displayName, imageUrl } = this.props.paymentMethod;
+        let {classes} = this.props;
+        let {currencyCode, displayName, imageUrl} = this.props.paymentMethod;
         return (
             <Card>
-                <CardMedia
-                    image={imageUrl == null ? "" : imageUrl} // TODO: Placeholder image
-                    title={currencyCode}
-                    component="img"
-                />
+                <div className={classes.currencyImage}>
+                    <CardMedia
+                        image={imageUrl == null ? "" : imageUrl} // TODO: Lazy loading?
+                        title={currencyCode}
+                        component="img"
+                    />
+                </div>
                 <CardContent>
                     <Typography color="textSecondary">
                         {currencyCode}
@@ -40,7 +52,7 @@ class PaymentProfileCard extends Component {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="medium" color="primary" onClick={this.onClick}>
+                    <Button size="medium" color="secondary" onClick={this.onClick}>
                         View Address
                     </Button>
                 </CardActions>
@@ -58,7 +70,8 @@ PaymentProfileCard.propTypes = {
         displayName: PropTypes.string,
         imageUrl: PropTypes.string
     }).isRequired,
-    onViewAddressClicked: PropTypes.func
+    onViewAddressClicked: PropTypes.func,
+    classes: PropTypes.object.isRequired
 };
 
-export default PaymentProfileCard;
+export default withStyles(styles)(PaymentProfileCard);

@@ -13,27 +13,26 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-// TODO: Change text to loading when loading
 export function SaveProfileButton(props) {
     const classes = useStyles();
-    let {onClick, isEnabled} = props;
+    let {onClick, loading} = props;
     return (
         <Fab
             variant="extended"
             size="large"
             color="primary"
             aria-label="Add"
-            disabled={!isEnabled}
+            disabled={loading}
             className={classes.margin}
             onClick={onClick}
         >
            <Save className={classes.extendedIcon}/>
-           Create Payment Profile
+           {loading ? 'Loading' : 'Create Payment Profile'}
         </Fab>
     )
 }
 
 SaveProfileButton.propTypes = {
     onClick: PropTypes.func.isRequired,
-    isEnabled: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired
 };

@@ -25,8 +25,13 @@ const useStyles = makeStyles(theme => ({
 export function EditablePaymentMethod(props) {
     const classes = useStyles();
     const muiTheme = useTheme();
-    let {currencyCode, data, availableCurrencies, onCurrencyCodeChange, onDataChange, onDelete, hasError} = props;
-    let selectableCurrencies = availableCurrencies.map((currencyCode) => { return { value: currencyCode, label: currencyCode } });
+    let {
+        currencyCode, data, availableCurrencies, onCurrencyCodeChange,
+        onDataChange, onDelete, hasError, loading
+    } = props;
+    let selectableCurrencies = availableCurrencies.map((currencyCode) => {
+        return {value: currencyCode, label: currencyCode}
+    });
     return (
         <Grid container
               className={classes.root}
@@ -34,10 +39,11 @@ export function EditablePaymentMethod(props) {
         >
             <Grid item xs={4} sm={3}>
                 <EditablePaymentMethodSelect
-                     muiTheme={muiTheme}
-                     onCurrencyCodeChange={onCurrencyCodeChange}
-                     selectedValue={currencyCode ? {value: currencyCode, label: currencyCode} : null}
-                     selectableCurrencies={selectableCurrencies}
+                    loading={loading}
+                    muiTheme={muiTheme}
+                    onCurrencyCodeChange={onCurrencyCodeChange}
+                    selectedValue={currencyCode ? {value: currencyCode, label: currencyCode} : null}
+                    selectableCurrencies={selectableCurrencies}
                 />
             </Grid>
             <Grid item xs={6} sm={8}>
@@ -48,7 +54,9 @@ export function EditablePaymentMethod(props) {
                     label='Address'
                     className={classes.textField}
                     variant="outlined"
-                    onChange={(e) => {onDataChange(e.target.value)}}
+                    onChange={(e) => {
+                        onDataChange(e.target.value)
+                    }}
                 />
             </Grid>
             <Grid item xs={2} sm={1} className={classes.deleteIcon}>

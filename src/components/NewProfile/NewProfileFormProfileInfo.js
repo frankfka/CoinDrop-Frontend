@@ -1,13 +1,7 @@
-import {Container, Grid, makeStyles} from "@material-ui/core";
+import {Grid, makeStyles} from "@material-ui/core";
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import {EditablePaymentMethod} from "./EditablePaymentMethod";
-import {AddPaymentMethod} from "./AddPaymentMethod";
 import * as PropTypes from "prop-types";
-import EditablePaymentMethodSelect from "./EditablePaymentMethodSelect";
 import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/core/SvgIcon/SvgIcon";
 
 export const PROFILE_NAME_KEY = 'profileName';
 
@@ -36,7 +30,9 @@ function NewProfileFormProfileInfo(props) {
                     helperText='Optional'
                     className={classes.textField}
                     variant="outlined"
-                    onChange={(e) => {onProfileInfoChange(PROFILE_NAME_KEY, e.target.value)}}
+                    onChange={(e) => {
+                        onProfileInfoChange(PROFILE_NAME_KEY, e.target.value)
+                    }}
                 />
             </Grid>
         </Grid>
