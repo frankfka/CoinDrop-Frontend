@@ -34,11 +34,12 @@ class PaymentProfileCard extends Component {
     render() {
         let {classes} = this.props;
         let {currencyCode, displayName, imageUrl} = this.props.paymentMethod;
+        //TODO: Placeholder image when no imageURL
         return (
             <Card>
                 <div className={classes.currencyImage}>
                     <CardMedia
-                        image={imageUrl == null ? "" : imageUrl} // TODO: Lazy loading?
+                        image={imageUrl == null ? "" : imageUrl}
                         title={currencyCode}
                         component="img"
                     />

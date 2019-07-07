@@ -24,7 +24,7 @@ class NewProfilePage extends Component {
         const {classes} = this.props;
 
         return (
-            <div className={classes.root}>
+            <div>
                 <Typography variant='h3' component='h1'>New Profile</Typography>
                 <Typography variant='subtitle1' component='h5'>
                     Create a unique payment profile for others to pay you in cryptocurrency.

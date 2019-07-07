@@ -60,7 +60,7 @@ export function EditablePaymentMethod(props) {
                 />
             </Grid>
             <Grid item xs={2} sm={1} className={classes.deleteIcon}>
-                <IconButton aria-label="Delete" onClick={onDelete} className={classes.deleteIcon}>
+                <IconButton aria-label="Delete" onClick={onDelete}>
                     <DeleteIcon/>
                 </IconButton>
             </Grid>
