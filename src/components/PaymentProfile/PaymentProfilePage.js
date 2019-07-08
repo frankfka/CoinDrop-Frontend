@@ -3,10 +3,10 @@ import {getCoinInfo, getProfile} from '../../utils/networkUtil'
 import {FullScreenLoading} from "../Common/Loading";
 import PaymentMethodDetailDialog from "./PaymentMethodDetailsDialog";
 import PaymentProfileCardCollection from "./PaymentProfileCardCollection";
-import withPageContainer from "../Common/withPageContainer";
 import ErrorPrompt from "../Common/ErrorPrompt";
 import {Typography, withStyles} from "@material-ui/core";
-import PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types';
+import ErrorPage from "../Common/ErrorPage";
 
 const styles = (theme) => ({
     profileSection: {
@@ -41,9 +41,8 @@ class PaymentProfilePage extends Component {
 
         // If error in retrieving profile (and no profileData is present), show full-screen error dialog
         if (error && !profileData) {
-            // TODO!
             return (
-                <div>ERROR!</div>
+                <ErrorPage message={'This doesn\'t seem to be a valid profile.'}/>
             )
         }
 
@@ -176,4 +175,4 @@ PaymentProfilePage.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withPageContainer(withStyles(styles)(PaymentProfilePage));
+export default withStyles(styles)(PaymentProfilePage);

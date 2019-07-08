@@ -8,7 +8,7 @@ const styles = (theme) => ({
     }
 });
 
-export default function withPageContainer(ChildComponent) {
+export default function withContainer(ChildComponent) {
     let wrappedComponent = class extends React.Component {
         render() {
             let {classes, ...otherProps} = this.props;

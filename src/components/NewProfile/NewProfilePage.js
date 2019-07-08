@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import * as PropTypes from "prop-types"
 import NewProfileForm from "./NewProfileForm";
 import {withStyles, Typography} from "@material-ui/core";
-import withPageContainer from "../Common/withPageContainer";
 
 const styles = (theme) => ({
     newProfileForm: {
@@ -38,7 +37,7 @@ class NewProfilePage extends Component {
 
 }
 
-export default withPageContainer(withStyles(styles)(NewProfilePage));
+export default withStyles(styles)(NewProfilePage);
 
 NewProfilePage.propTypes = {
     classes: PropTypes.object.isRequired
