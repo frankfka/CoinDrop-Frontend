@@ -7,11 +7,11 @@ import {SaveProfileButton} from "./SaveProfileButton";
 
 import {getSupportedCoins, saveProfile} from "../../utils/networkUtil";
 import {PROFILE} from "../../constants/routes";
-import ErrorPrompt from "../Common/ErrorPrompt";
 import {withStyles} from "@material-ui/core";
 import NewProfileFormPaymentMethods from "./NewProfileFormPaymentMethods";
 import NewProfileFormProfileInfo from "./NewProfileFormProfileInfo";
 import {PROFILE_NAME_KEY} from "./NewProfileFormProfileInfo";
+import MessageSnackbar from "../Common/MessageSnackbar";
 
 const styles = (theme) => ({
     heading: {
@@ -66,9 +66,10 @@ class NewProfileForm extends Component {
             <Grid container>
                 {
                     formData.formErrorMessage ? (
-                        <ErrorPrompt
+                        <MessageSnackbar
                             message={formData.formErrorMessage}
                             onDismiss={this.onDismissErrorPrompt}
+                            variant={'error'}
                         />
                     ) : <div/>
                 }

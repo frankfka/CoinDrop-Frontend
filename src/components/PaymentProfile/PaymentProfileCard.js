@@ -8,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography'
 import {withStyles} from "@material-ui/core";
+import placeholderImg from './Images/icon_placeholder.svg'
 
 const styles = (theme) => ({
     currencyImage: {
@@ -34,12 +35,11 @@ class PaymentProfileCard extends Component {
     render() {
         let {classes} = this.props;
         let {currencyCode, displayName, imageUrl} = this.props.paymentMethod;
-        //TODO: Placeholder image when no imageURL
         return (
             <Card>
                 <div className={classes.currencyImage}>
                     <CardMedia
-                        image={imageUrl == null ? "" : imageUrl}
+                        image={imageUrl == null ? placeholderImg : imageUrl}
                         title={currencyCode}
                         component="img"
                     />

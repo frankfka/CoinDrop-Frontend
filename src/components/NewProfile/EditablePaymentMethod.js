@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     textField: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: '#FFFFFF',
         width: '100%'
     },
     deleteIcon: {

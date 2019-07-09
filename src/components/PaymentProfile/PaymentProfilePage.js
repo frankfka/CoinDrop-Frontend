@@ -3,10 +3,10 @@ import {getCoinInfo, getProfile} from '../../utils/networkUtil'
 import {FullScreenLoading} from "../Common/Loading";
 import PaymentMethodDetailDialog from "./PaymentMethodDetailsDialog";
 import PaymentProfileCardCollection from "./PaymentProfileCardCollection";
-import ErrorPrompt from "../Common/ErrorPrompt";
 import {Typography, withStyles} from "@material-ui/core";
 import * as PropTypes from 'prop-types';
 import ErrorPage from "../Common/ErrorPage";
+import MessageSnackbar from "../Common/MessageSnackbar";
 
 const styles = (theme) => ({
     profileSection: {
@@ -29,7 +29,6 @@ class PaymentProfilePage extends Component {
         this.profileLoaded = this.profileLoaded.bind(this);
     }
 
-    // TODO: Test that this returns properly in case of partial data
     render() {
         let {loading, error, openDialogFor, profileData} = this.state;
         let {classes} = this.props;
@@ -59,7 +58,10 @@ class PaymentProfilePage extends Component {
                 }
                 {
                     error && (
-                        <ErrorPrompt message={'Some parts of this page may not have loaded properly.'}/>
+                        <MessageSnackbar
+                            message={'Some parts of this page may not have loaded properly.'}
+                            variant={'error'}
+                        />
                     )
                 }
                 <div>

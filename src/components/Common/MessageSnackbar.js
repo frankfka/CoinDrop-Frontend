@@ -4,20 +4,21 @@ import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import {SnackbarContent, Typography} from "@material-ui/core";
+import * as PropTypes from "prop-types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = (variant) => makeStyles(theme => ({
     closeBtn: {
         padding: theme.spacing(0.5),
     },
-    error: {
-        backgroundColor: theme.palette.error.main
+    container: {
+        backgroundColor: variant === 'error' ? theme.palette.error.main : theme.palette.primary.main
     }
 }));
 
-function ErrorPrompt(props) {
-    const classes = useStyles();
+function MessageSnackbar(props) {
+    const {message, variant, onDismiss} = props;
+    const classes = useStyles(variant)();
     const [open, setOpen] = React.useState(true);
-    const {message, onDismiss} = props;
 
     function handleClose(event, reason) {
         if (reason === 'clickaway') {
@@ -40,7 +41,7 @@ function ErrorPrompt(props) {
             }}
         >
             <SnackbarContent
-                className={classes.error}
+                className={classes.container}
                 message={<Typography variant="body1">{message}</Typography>}
                 action={[
                     <IconButton
@@ -56,4 +57,10 @@ function ErrorPrompt(props) {
     );
 }
 
-export default ErrorPrompt
+export default MessageSnackbar
+
+MessageSnackbar.propTypes = {
+    message: PropTypes.string.isRequired,
+    onDismiss: PropTypes.func,
+    variant: PropTypes.string
+};
