@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         justifyContent: 'space-between',
         padding: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2)
+        paddingLeft: theme.spacing(4),
+        paddingRight: theme.spacing(4)
     },
     brandLink: {
         color: theme.palette.getContrastText(theme.palette.primary.main),
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 export default function CoinDropAppBar() {
     const classes = useStyles();
 
-    // TODO: Logo, favicon, SEO
+    // TODO: backeend url
 
     return (
         <div className={classes.root}>
@@ -46,7 +46,7 @@ export default function CoinDropAppBar() {
                     <Link to={HOME} className={classes.brandLink}>
                         <img src={appLogo} alt={'logo'} className={classes.brandImg}/>
                         <Hidden xsDown>
-                            <Typography variant="h6">
+                            <Typography variant="h5">
                                 Coindrop
                             </Typography>
                         </Hidden>
