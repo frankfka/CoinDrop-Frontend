@@ -36,7 +36,7 @@ export default function HomePage() {
     return (
         <div>
             <Grid container className={classes.header}>
-                <Grid xs={12} sm={8} md={6}>
+                <Grid item xs={12} sm={8} md={6}>
                     <Typography variant='h2' component='h1'>
                         Get Paid Easily in Crypto.
                     </Typography>
@@ -54,7 +54,7 @@ export default function HomePage() {
                     </Link>
                 </Grid>
                 <Hidden smDown>
-                    <Grid sm={4} md={6}>
+                    <Grid item sm={4} md={6}>
                         <img src={headerImg} alt='header' className={classes.headerImg}/>
                     </Grid>
                 </Hidden>

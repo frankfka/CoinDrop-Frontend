@@ -13,6 +13,7 @@ import appTheme from './components/AppTheme'
 import {Container} from "@material-ui/core";
 import Footer from "./components/Common/Footer";
 import InvalidPage from "./components/Common/InvalidPage";
+import TermsPage from "./components/Misc/TermsPage";
 
 const useStyles = makeStyles((theme) => ({
     appBody: {
@@ -33,6 +34,7 @@ function App() {
                         <Switch>
                             <Route exact path={ROUTES.HOME} component={Home}/>
                             <Route exact path={ROUTES.NEW_PROFILE} component={NewProfilePage}/>
+                            <Route exact path={ROUTES.TERMS} component={TermsPage}/>
                             <Route path={ROUTES.PROFILE_ID_MATCH} component={PaymentProfilePage}/>
                             <Route component={InvalidPage}/>
                         </Switch>

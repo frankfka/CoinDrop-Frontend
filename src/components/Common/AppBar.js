@@ -37,8 +37,6 @@ const useStyles = makeStyles(theme => ({
 export default function CoinDropAppBar() {
     const classes = useStyles();
 
-    // TODO: backeend url
-
     return (
         <div className={classes.root}>
             <AppBar position="static">
