@@ -15,6 +15,8 @@ import Footer from "./components/Common/Footer";
 import InvalidPage from "./components/Common/InvalidPage";
 import TermsPage from "./components/Misc/TermsPage";
 
+import './global.sass'
+
 const useStyles = makeStyles((theme) => ({
     appBody: {
         minHeight: '100vh',
