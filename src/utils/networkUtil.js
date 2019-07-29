@@ -1,31 +1,27 @@
 import axios from 'axios';
-import CryptoJS from 'crypto-js'
+import CryptoJS from 'crypto-js';
 import {
-    API_PROFILE_URL,
-    API_COIN_INFO_URL,
-    API_ALL_COINS_URL,
-    CLIENT_SIGNING_KEY,
-    API_TIMESTAMP_HEADER_KEY,
-    API_SIG_HEADER_KEY
+  API_PROFILE_URL,
+  API_COIN_INFO_URL,
+  API_ALL_COINS_URL,
+  CLIENT_SIGNING_KEY,
+  API_TIMESTAMP_HEADER_KEY,
+  API_SIG_HEADER_KEY,
 } from '../constants/networking';
 
 // Current time in ms
-const getTimestamp = () => {
-    return new Date().getTime();
-};
+const getTimestamp = () => new Date().getTime();
 // Signed signature for client validation
-const getSignature = (requestInfoString, timestamp) => {
-    return CryptoJS.HmacSHA256(`${timestamp}:${requestInfoString}`, CLIENT_SIGNING_KEY)
-        .toString(CryptoJS.enc.Hex);
-};
+const getSignature = (requestInfoString, timestamp) => CryptoJS.HmacSHA256(`${timestamp}:${requestInfoString}`, CLIENT_SIGNING_KEY)
+  .toString(CryptoJS.enc.Hex);
 // Builds header object
 const buildHeader = (requestInfo) => {
-    const timestamp = getTimestamp();
-    const signature = getSignature(JSON.stringify(requestInfo), timestamp);
-    return {
-        [API_TIMESTAMP_HEADER_KEY]: timestamp,
-        [API_SIG_HEADER_KEY]: signature
-    }
+  const timestamp = getTimestamp();
+  const signature = getSignature(JSON.stringify(requestInfo), timestamp);
+  return {
+    [API_TIMESTAMP_HEADER_KEY]: timestamp,
+    [API_SIG_HEADER_KEY]: signature,
+  };
 };
 
 /*
@@ -38,14 +34,14 @@ Returns the following:
 in an object within the promise
  */
 export async function getProfile(profileId) {
-    const requestInfo = {
-        profileId: profileId
-    };
-    let res = await axios.get(API_PROFILE_URL, {
-        params: requestInfo,
-        headers: buildHeader(requestInfo)
-    });
-    return res.data
+  const requestInfo = {
+    profileId,
+  };
+  const res = await axios.get(API_PROFILE_URL, {
+    params: requestInfo,
+    headers: buildHeader(requestInfo),
+  });
+  return res.data;
 }
 
 /*
@@ -56,13 +52,13 @@ Expects the following:
 Returns a profile ID in a promise
  */
 export async function saveProfile(profileData) {
-    const requestInfo = {
-        ...profileData
-    };
-    let res = await axios.put(API_PROFILE_URL, requestInfo, {
-        headers: buildHeader(requestInfo)
-    });
-    return res.data.profileId;
+  const requestInfo = {
+    ...profileData,
+  };
+  const res = await axios.put(API_PROFILE_URL, requestInfo, {
+    headers: buildHeader(requestInfo),
+  });
+  return res.data.profileId;
 }
 
 /*
@@ -72,14 +68,14 @@ export async function saveProfile(profileData) {
  Returns an array of coin objects in a promise
  */
 export async function getCoinInfo(coins) {
-    const requestInfo = {
-        currencyCodes: coins.join(',')
-    };
-    let res = await axios.get(API_COIN_INFO_URL, {
-        params: requestInfo,
-        headers: buildHeader(requestInfo)
-    });
-    return res.data.rawCoinInfo;
+  const requestInfo = {
+    currencyCodes: coins.join(','),
+  };
+  const res = await axios.get(API_COIN_INFO_URL, {
+    params: requestInfo,
+    headers: buildHeader(requestInfo),
+  });
+  return res.data.rawCoinInfo;
 }
 
 /*
@@ -88,8 +84,8 @@ Retrieves a list of supported currencies from backend & returns a promise
 Returns an array of currencyCodes in the promise
  */
 export async function getSupportedCoins() {
-    let res = await axios.get(API_ALL_COINS_URL, {
-        headers: buildHeader({})
-    });
-    return res.data.allCoins
+  const res = await axios.get(API_ALL_COINS_URL, {
+    headers: buildHeader({}),
+  });
+  return res.data.allCoins;
 }

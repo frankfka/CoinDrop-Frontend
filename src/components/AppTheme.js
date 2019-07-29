@@ -1,22 +1,22 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const appTheme = createMuiTheme({
-    palette: {
-        primary: {
-            main: '#000000',
-        },
-        secondary: {
-            main: '#ef6c00',
-        },
-        error: {
-            main: '#ef6c00',
-        }
+  palette: {
+    primary: {
+      main: '#000000',
     },
-    props: {
-        MuiButtonBase: {
-            disableRipple: true, // No ripple effect on click
-        },
+    secondary: {
+      main: '#ef6c00',
     },
+    error: {
+      main: '#ef6c00',
+    },
+  },
+  props: {
+    MuiButtonBase: {
+      disableRipple: true, // No ripple effect on click
+    },
+  },
 });
 
-export default appTheme
+export default appTheme;

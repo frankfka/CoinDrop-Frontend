@@ -1,44 +1,26 @@
-import React, {Component} from 'react';
-import * as PropTypes from "prop-types"
-import NewProfileForm from "./NewProfileForm";
-import {withStyles, Typography} from "@material-ui/core";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import NewProfileForm from './NewProfileForm';
 
-const styles = (theme) => ({
-    newProfileForm: {
-        marginTop: theme.spacing(2)
-    },
-});
+const useStyles = makeStyles(theme => ({
+  newProfileForm: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
-class NewProfilePage extends Component {
+export default function NewProfilePage() {
+  const classes = useStyles();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: true,
-            error: null
-        }
-    }
-
-    render() {
-        const {classes} = this.props;
-
-        return (
-            <div>
-                <Typography variant='h3' component='h1'>New Profile</Typography>
-                <Typography variant='subtitle1' component='h5'>
-                    Create a unique payment profile for others to pay you in cryptocurrency.
-                </Typography>
-                <div className={classes.newProfileForm}>
-                    <NewProfileForm/>
-                </div>
-            </div>
-        )
-    }
-
+  return (
+    <div>
+      <Typography variant="h3" component="h1">New Profile</Typography>
+      <Typography variant="subtitle1" component="h5">
+        Create a unique payment profile for others to pay you in cryptocurrency.
+      </Typography>
+      <div className={classes.newProfileForm}>
+        <NewProfileForm />
+      </div>
+    </div>
+  );
 }
-
-export default withStyles(styles)(NewProfilePage);
-
-NewProfilePage.propTypes = {
-    classes: PropTypes.object.isRequired
-};
