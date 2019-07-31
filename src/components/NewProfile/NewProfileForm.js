@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import * as PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,7 +6,6 @@ import { withStyles } from '@material-ui/core';
 import SaveProfileButton from './SaveProfileButton';
 
 import { getSupportedCoins, saveProfile } from '../../utils/networkUtil';
-import { PROFILE } from '../../constants/routes';
 import NewProfileFormPaymentMethods from './NewProfileFormPaymentMethods';
 import { PROFILE_NAME_KEY, NewProfileFormProfileInfo } from './NewProfileFormProfileInfo';
 
@@ -24,14 +22,14 @@ const styles = theme => ({
   },
 });
 
+// TODO: Error dialog
 class NewProfileForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loadingSave: false,
       loadingCurrencies: true,
-      error: null,
-      savedProfileId: null,
+      savedProfileId: null, // TODO: this should be replaced with disabled (passed by page)
       allCurrencyCodes: [],
       formData: {
         formErrorMessage: null,
@@ -52,6 +50,7 @@ class NewProfileForm extends Component {
     Retrieves a list of supported currencies on mount
      */
   componentDidMount() {
+    const { onLoadCurrenciesError } = this.props;
     getSupportedCoins()
       .then((coins) => {
         this.setState({
@@ -61,9 +60,9 @@ class NewProfileForm extends Component {
       })
       .catch((err) => {
         this.setState({
-          error: err,
           loadingCurrencies: false,
         });
+        onLoadCurrenciesError(err);
       });
   }
 
@@ -139,8 +138,24 @@ class NewProfileForm extends Component {
      */
   onFormSubmit() {
     if (this.validatePaymentMethods()) {
+      const { onSaveSuccess, onSaveError } = this.props;
+      // Define behavior for save success & fail
+      const onSuccess = (profileId) => {
+        this.setState({
+          loadingSave: false,
+          savedProfileId: profileId,
+        });
+        onSaveSuccess(profileId);
+      };
+      const onErr = (err) => {
+        this.setState({
+          loadingSave: false,
+        });
+        onSaveError(err);
+      };
+
       // Set to loading, we're going to make a network call
-      this.setState({ loading: true });
+      this.setState({ loadingSave: true });
       const { formData } = this.state;
       // Extract fields that we need
       const dataToSubmit = {
@@ -153,24 +168,16 @@ class NewProfileForm extends Component {
       saveProfile(dataToSubmit)
         .then((profileId) => {
           if (profileId) {
-          // Use Redirect to push to new address
-            this.setState({
-              loading: false,
-              savedProfileId: profileId,
-            });
+            // Saved Successfully!
+            onSuccess(profileId);
           } else {
-          // Somehow no profile ID returned, set error state
-            this.setState({
-              error: Error('Save endpoint returned success but no profile ID was returned'),
-            });
+            // Somehow no profile ID returned, set error state
+            const err = Error('Save endpoint returned success but no profile ID was returned');
+            onErr(err);
           }
         })
         .catch((err) => {
-        // Set error state
-          this.setState({
-            error: err,
-            loading: false,
-          });
+          onErr(err);
         });
     }
   }
@@ -243,13 +250,7 @@ class NewProfileForm extends Component {
     } = this.state;
     const { classes } = this.props;
     const currentPaymentMethods = formData.paymentMethods;
-
-    // If payment profile was made, redirect to the created profile
-    if (savedProfileId) {
-      return (
-        <Redirect to={PROFILE + savedProfileId} />
-      );
-    }
+    const disableSave = !!savedProfileId; // Disable saving if a profile was saved
 
     return (
       <Grid container>
@@ -295,6 +296,7 @@ class NewProfileForm extends Component {
           <SaveProfileButton
             onClick={this.onFormSubmit}
             loading={loadingSave}
+            disabled={disableSave}
           />
         </Grid>
       </Grid>
@@ -304,6 +306,9 @@ class NewProfileForm extends Component {
 
 NewProfileForm.propTypes = {
   classes: PropTypes.instanceOf(Object).isRequired,
+  onSaveSuccess: PropTypes.func.isRequired,
+  onSaveError: PropTypes.func.isRequired,
+  onLoadCurrenciesError: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(NewProfileForm);

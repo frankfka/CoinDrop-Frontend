@@ -15,14 +15,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SaveProfileButton(props) {
   const classes = useStyles();
-  const { onClick, loading } = props;
+  const { onClick, loading, disabled } = props;
   return (
     <Fab
       variant="extended"
       size="large"
       color="primary"
       aria-label="Add"
-      disabled={loading}
+      disabled={loading || disabled}
       className={classes.margin}
       onClick={onClick}
     >
@@ -35,4 +35,5 @@ export default function SaveProfileButton(props) {
 SaveProfileButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };

@@ -1,19 +1,19 @@
-import {
-  Dialog, DialogContent, DialogTitle, DialogContentText,
-  DialogActions, Button, TextField, makeStyles,
-} from '@material-ui/core';
 import React, { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import { FileCopy } from '@material-ui/icons';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  Button,
+  Dialog, DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle, makeStyles,
+  TextField,
+} from '@material-ui/core';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import PaymentMethodQRCode from './PaymentMethodQRCode';
+import IconButton from '@material-ui/core/IconButton';
+import { FileCopy } from '@material-ui/icons';
 import MessageSnackbar from '../Common/MessageSnackbar';
 
 const useStyles = makeStyles(theme => ({
-  topMargin: {
-    marginTop: theme.spacing(2),
-  },
   textLinkSection: {
     width: '100%',
     display: 'flex',
@@ -22,57 +22,53 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   linkTextBox: {
+    width: '100%',
     marginRight: theme.spacing(1),
   },
 }));
 
-export default function PaymentMethodDetailDialog(props) {
+export default function NewProfileSuccessDialog(props) {
   const classes = useStyles();
-  const { paymentMethod, isOpen, handleClose } = props;
+  const { profileLink, isOpen, handleClose } = props;
   const [showCopiedPrompt, setShowCopiedPrompt] = useState(false);
-  const currencyCode = paymentMethod ? paymentMethod.currencyCode : null;
-  const data = paymentMethod ? paymentMethod.data : null;
 
-  const onAddressCopied = () => {
+  const onLinkCopied = () => {
     setShowCopiedPrompt(true);
   };
   const onCopiedPromptClose = () => {
     setShowCopiedPrompt(false);
   };
 
+
   return (
     <Dialog
       open={isOpen}
       onClose={handleClose}
-      maxWidth="lg"
+      maxWidth="sm"
     >
       {
         showCopiedPrompt
         && (
           <MessageSnackbar
-            message="Address copied."
+            message="Link copied."
             onDismiss={onCopiedPromptClose}
           />
         )
       }
 
       <DialogTitle>
-        Pay with&nbsp;
-        {currencyCode}
+        Success!
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Scan the QR code below:
-        </DialogContentText>
-        <PaymentMethodQRCode data={data} />
-        <DialogContentText className={classes.topMargin}>
-          Or use the following public address:
+          Your payment profile was created successfully! You can now share your unique link with
+           others to be paid cryptocurrency easily.
         </DialogContentText>
         <div className={classes.textLinkSection}>
           <TextField
             className={classes.linkTextBox}
-            label={`${currencyCode} Public Address`}
-            defaultValue={data}
+            label="Your Profile Link"
+            defaultValue={profileLink}
             margin="normal"
             InputProps={{
               readOnly: true,
@@ -80,8 +76,8 @@ export default function PaymentMethodDetailDialog(props) {
             variant="outlined"
           />
           <CopyToClipboard
-            text={data}
-            onCopy={onAddressCopied}
+            text={profileLink}
+            onCopy={onLinkCopied}
           >
             <IconButton aria-label="Copy address">
               <FileCopy />
@@ -90,21 +86,19 @@ export default function PaymentMethodDetailDialog(props) {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Dismiss</Button>
+        <Button
+          variant="text"
+          onClick={handleClose}
+        >
+          Done
+        </Button>
       </DialogActions>
     </Dialog>
   );
 }
 
-PaymentMethodDetailDialog.defaultProps = {
-  paymentMethod: null,
-};
-
-PaymentMethodDetailDialog.propTypes = {
-  paymentMethod: PropTypes.shape({
-    currencyCode: PropTypes.string.isRequired,
-    data: PropTypes.string.isRequired,
-  }),
+NewProfileSuccessDialog.propTypes = {
+  profileLink: PropTypes.string.isRequired,
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
